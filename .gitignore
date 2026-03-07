@@ -29,6 +29,7 @@ secret/
 *.temp
 *.zip
 roles/vault/files/vault
+notes.md
 
 # Logs
 logs/*

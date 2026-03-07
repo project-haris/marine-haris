@@ -1,0 +1,24 @@
+# Raspberry Pi Configuration for Marine_Haris
+# Add these lines to /boot/firmware/config.txt
+
+# Enable NVMe boot
+dtparam=nvme
+
+# CAN interface configuration
+dtparam=i2c_arm=on
+dtparam=spi=on
+dtoverlay=mcp2515-can0,oscillator=16000000,interrupt=25
+dtoverlay=spi-bcm2835-overlay
+
+# Increase GPU memory for processing
+gpu_mem=256
+
+# Disable audio (not needed)
+dtparam=audio=off
+
+# Enable hardware serial for NMEA 0183
+enable_uart=1
+
+# Set CPU governor to performance for real-time processing
+arm_freq=2400
+core_freq=500
