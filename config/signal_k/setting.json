@@ -1,0 +1,31 @@
+{
+  "vessel": {
+    "name": "Marine_Haris_Node",
+    "uuid": "urn:mrn:signalk:uuid:00000000-0000-0000-0000-000000000000",
+    "mmsi": "000000000"
+  },
+  "interfaces": {
+    "nmea0183": {
+      "enabled": true,
+      "type": "serial",
+      "device": "/dev/ttyS0",
+      "baud": 4800,
+      "sentencePrefix": "II",
+      "validateChecksum": true
+    },
+    "nmea2000": {
+      "enabled": true,
+      "type": "canbus",
+      "interface": "can0",
+      "canSpeed": 250000
+    }
+  },
+  "security": {
+    "enabled": true,
+    "allowNewUserRegistration": false,
+    "allowedLoginAttempts": 3
+  },
+  "logging": {
+    "level": "info"
+  }
+}

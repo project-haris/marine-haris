@@ -1,0 +1,14 @@
+{
+  "signalk-to-influxdb": {
+    "enabled": true,
+    "host": "localhost",
+    "port": 8086,
+    "database": "marine_haris_db",
+    "retentionPolicy": "30d",
+    "recordTrack": true,
+    "resolution": 60
+  },
+  "resources-provider": {
+    "enabled": true
+  }
+}

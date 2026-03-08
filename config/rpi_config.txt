@@ -1,10 +1,18 @@
 # Raspberry Pi Configuration for Marine_Haris
+# This is the boot configuration for the Raspberry Pi. It enables the NVMe drive, the PiCAN-M HAT (CAN Bus), and the serial ports.
 # Add these lines to /boot/firmware/config.txt
+
+# Boot Configuration
+disable_splash=1
+boot_delay=0
 
 # Enable NVMe boot
 dtparam=nvme
 
-# CAN interface configuration
+# Enable CAN Bus for PiCAN-M HAT
+# Overlay: mcp2515-can0
+# Oscillator: 16MHz
+# Interrupt: GPIO 25
 dtparam=i2c_arm=on
 dtparam=spi=on
 dtoverlay=mcp2515-can0,oscillator=16000000,interrupt=25
@@ -16,8 +24,11 @@ gpu_mem=256
 # Disable audio (not needed)
 dtparam=audio=off
 
-# Enable hardware serial for NMEA 0183
+# Enable Serial Port (for NMEA 0183)
+# enable_uart=1 enables the PL011 UART on GPIO 14/15
+# This disables the console shell on serial, allowing raw NMEA data input
 enable_uart=1
+dtoverlay=disable-bt
 
 # Set CPU governor to performance for real-time processing
 arm_freq=2400
