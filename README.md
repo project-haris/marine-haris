@@ -1,4 +1,3 @@
-
 # Marine_Haris: Maritime Security Data Collector
 
 ![Status](https://img.shields.io/badge/Status-Active-success)
