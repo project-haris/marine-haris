@@ -14,19 +14,19 @@
 
 ## 2. Network Security
 
-*   [ ] **Firewall Status**: Is UFW active (`sudo ufw status`)?
-*   [ ] **Input Policy**: Is the default Input policy set to DENY?
-*   [ ] **SSH Restriction**: Is SSH allowed *only* from the VPN subnet?
-*   [ ] **VPN Status**: Is the WireGuard interface (`wg0`) active and connected?
-*   [ ] **Public IP**: Does `curl ifconfig.me` return the MSOC public IP (confirming VPN routing)?
-*   [ ] **Port Scanning**: Run a local nmap scan. Are only ports 22 and 3000 filtered/closed to the local vessel network?
+*   [ ] **Firewall Status**: Is firewalld active (`sudo firewall-cmd --state`)?
+*   [ ] **Input Policy**: Is the default zone set to `drop`?
+*   [ ] **SSH Restriction**: Is SSH allowed *only* from the Tailscale zone?
+*   [ ] **VPN Status**: Is the Tailscale interface (`tailscale0`) active and connected?
+*   [ ] **Public IP**: Does `curl ifconfig.me` return the expected IP (verify network routing)?
+*   [ ] **Port Scanning**: Run a local nmap scan. Are only expected ports open on the Tailscale interface?
 
 ## 3. Data Security
 
 *   [ ] **Disk Encryption**: Is the NVMe SSD encrypted (LUKS)?
     *   Command: `lsblk -f` (Should show `crypto_LUKS` type).
 *   [ ] **Key Management**: Is the encryption key stored securely (not in plaintext on the boot partition)?
-*   [ ] **Transmission Encryption**: Is all outbound traffic routed via WireGuard? (Check `ip route`).
+*   [ ] **Transmission Encryption**: Is all outbound traffic routed via Tailscale? (Check `tailscale status`).
 *   [ ] **Local Storage**: Are there any plaintext log files containing sensitive navigation data visible in `/var/log`?
 
 ## 4. System Hardening
@@ -42,7 +42,7 @@
 
 | ID | Finding | Severity | Remediation Plan | Status |
 |---|---|---|---|---|
-| 001 | Example: Port 80 found open | High | Close port via UFW rule update | [ ] Fixed |
+| 001 | Example: Port 80 found open | High | Close port via firewalld rule update | [ ] Fixed |
 | 002 | Example: Firmware outdated | Medium | Schedule downtime for apt upgrade | [ ] Scheduled |
 
 ---

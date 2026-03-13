@@ -43,50 +43,25 @@ That gives you isolation without depending on inbound connectivity to the cellul
 
 ## 2) Build the remote server first
 
-I’ll assume **Ubuntu Server** on the public-IP machine. Ubuntu documents WireGuard for peer-to-site/site-to-site use, manages `wg-quick` through systemd, and uses `ufw` as the standard firewall front-end. ([Ubuntu][3])
-
 Install the basics:
 
 ```bash
 sudo apt update
-sudo apt install -y wireguard ufw rsync openssh-server
+sudo apt install -y firewalld rsync openssh-server
+curl -fsSL https://tailscale.com/install.sh | sh
 ```
 
-Generate server keys:
+Authenticate Tailscale:
 
 ```bash
-sudo umask 077
-sudo sh -c 'wg genkey | tee /etc/wireguard/server.key | wg pubkey > /etc/wireguard/server.pub'
-sudo cat /etc/wireguard/server.pub
+sudo tailscale up --authkey=tskey-auth-xxxxxxxxx
 ```
 
-WireGuard’s own quick start uses `wg genkey` and `wg pubkey` for key generation. ([wireguard.com][4])
-
-Create `/etc/wireguard/wg0.conf`:
-
-```ini
-[Interface]
-Address = 10.44.0.1/24
-ListenPort = 51820
-PrivateKey = <SERVER_PRIVATE_KEY>
-
-[Peer]
-# Vessel Raspberry Pi
-PublicKey = <PI_PUBLIC_KEY>
-AllowedIPs = 10.44.0.2/32
-```
-
-Bring it up and open the firewall:
+Verify connection:
 
 ```bash
-sudo systemctl enable --now wg-quick@wg0
-
-sudo ufw allow OpenSSH
-sudo ufw allow 51820/udp
-sudo ufw enable
+tailscale status
 ```
-
-On Ubuntu, `wg-quick` is controlled with the `wg-quick@...` systemd service. ([Ubuntu Documentation][5])
 
 Create a storage location for incoming logs:
 
@@ -137,57 +112,41 @@ For a boat install, give the Pi its **own fused 5V/5A marine DC-DC supply**. Ras
 Install base packages on the Pi:
 
 ```bash
-sudo apt install -y wireguard can-utils rsync logrotate ufw
+sudo apt install -y firewalld can-utils rsync logrotate
 sudo timedatectl set-timezone UTC
 ```
 
-## 5) Bring up WireGuard on the Pi
+## 5) Bring up Tailscale on the Pi
 
-Generate Pi keys:
-
-```bash
-sudo umask 077
-sudo sh -c 'wg genkey | tee /etc/wireguard/pi.key | wg pubkey > /etc/wireguard/pi.pub'
-sudo cat /etc/wireguard/pi.pub
-```
-
-Create `/etc/wireguard/wg0.conf`:
-
-```ini
-[Interface]
-Address = 10.44.0.2/24
-PrivateKey = <PI_PRIVATE_KEY>
-
-[Peer]
-PublicKey = <SERVER_PUBLIC_KEY>
-Endpoint = <SERVER_PUBLIC_IP_OR_DNS>:51820
-AllowedIPs = 10.44.0.1/32
-PersistentKeepalive = 25
-```
-
-`PersistentKeepalive = 25` is the WireGuard-recommended value for a peer behind NAT/firewall, which is exactly your Pi-behind-cellular-router situation. ([wireguard.com][4])
-
-Start it:
+Install and authenticate:
 
 ```bash
-sudo systemctl enable --now wg-quick@wg0
-sudo wg show
-ping -c 3 10.44.0.1
+curl -fsSL https://tailscale.com/install.sh | sh
+sudo tailscale up --authkey=tskey-auth-xxxxxxxxx
+```
+
+Once connected, verify:
+
+```bash
+tailscale status
+tailscale ping <server-hostname>
 ```
 
 Once the tunnel works, lock the Pi down so management is only through the VPN:
 
 ```bash
-sudo ufw default deny incoming
-sudo ufw default allow outgoing
-sudo ufw allow in on wg0 to any port 22 proto tcp
-sudo ufw enable
+sudo firewall-cmd --permanent --new-zone=tailscale
+sudo firewall-cmd --permanent --zone=tailscale --add-interface=tailscale0
+sudo firewall-cmd --permanent --zone=tailscale --add-service=ssh
+sudo firewall-cmd --permanent --zone=tailscale --set-target=ACCEPT
+sudo firewall-cmd --set-default-zone=drop
+sudo firewall-cmd --reload
 ```
 
 At that point, your normal management path becomes:
 
 ```bash
-ssh <pi-user>@10.44.0.2
+ssh <pi-user>@<tailscale-hostname>
 ```
 
 ## 6) Enable PiCAN‑M for NMEA 2000 and NMEA 0183

@@ -443,7 +443,7 @@ ping -c 4 192.168.1.1  # Replace with router IP
 |---------|---------------|----------|
 | No cellular connection | SIM issue, signal problem | Verify SIM status, check signal strength |
 | Can't reach router | Wrong IP, network conflict | Verify router IP, check DHCP settings |
-| VPN won't connect | Keys mismatch, firewall | Verify WireGuard configuration |
+| VPN won't connect | Auth issue, firewall | Verify Tailscale authentication |
 
 ---
 

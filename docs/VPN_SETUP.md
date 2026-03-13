@@ -1,154 +1,207 @@
-
-# WireGuard VPN Configuration
+# Tailscale VPN Configuration
 
 ## 🏗️ **VPN Architecture Overview**
 
 ```mermaid
 flowchart LR
     A[Marine_Haris Device] --> B[TP-Link NX200 Router]
-    B --> C[WireGuard Client]
+    B --> C[Tailscale Client]
     C --> D((Internet<br/>Cellular))
-    D --> E[WireGuard Server<br/>Remote MSOC]
-    E --> F[MSOC Network]
+    D --> E[Tailscale Coordination<br/>Server]
+    E --> F[Remote MSOC Server<br/>Tailscale Node]
+    F --> G[MSOC Network]
 ```
 
 ## 🖥️ **Server Configuration (Remote MSOC)**
 
-### **Step 1: Install WireGuard**
+### **Step 1: Install Tailscale**
 ```bash
-# Install WireGuard on server
-sudo apt install wireguard -y
+# Install Tailscale on server
+curl -fsSL https://tailscale.com/install.sh | sh
 
-# Generate server keys
-wg genkey | sudo tee /etc/wireguard/privatekey | wg pubkey | sudo tee /etc/wireguard/publickey
+# Authenticate and connect to your tailnet
+sudo tailscale up
 ```
 
-### **Step 2: Create Server Config**
-```ini
-# /etc/wireguard/wg0.conf
-[Interface]
-Address = 10.0.0.1/24
-SaveConfig = true
-PostUp = iptables -A FORWARD -i wg0 -j ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
-PostDown = iptables -D FORWARD -i wg0 -j ACCEPT; iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE
-ListenPort = 51820
-PrivateKey = <SERVER_PRIVATE_KEY>
+### **Step 2: Configure as Subnet Router (Optional)**
+If the MSOC server needs to provide access to the internal network:
 
-[Peer]
-PublicKey = <ROUTER_PUBLIC_KEY>
-AllowedIPs = 10.0.0.2/32
-```
-
-### **Step 3: Enable Forwarding**
 ```bash
+# Advertise routes to internal MSOC network
+sudo tailscale up --advertise-routes=192.168.1.0/24
+
 # Enable IP forwarding
 sudo sysctl -w net.ipv4.ip_forward=1
 echo "net.ipv4.ip_forward=1" | sudo tee -a /etc/sysctl.conf
 ```
 
-## 📡 **Client Configuration (TP-Link NX200)**
+### **Step 3: Approve Routes**
+1. Go to [Tailscale Admin Console](https://login.tailscale.com/admin/machines)
+2. Find your server machine
+3. Click "Edit route settings"
+4. Approve the advertised routes
 
-### **Step 1: Access Router Interface**
-1. Connect to router via Ethernet
-2. Access web interface at `http://tplinkwifi.net`
-3. Login with admin credentials
+## 📡 **Client Configuration (Marine_Haris Device)**
 
-### **Step 2: Configure VPN Client**
-1. Navigate to **VPN** → **WireGuard**
-2. Click **Add New Profile**
-3. Configure settings:
+### **Step 1: Install Tailscale**
+```bash
+# Install Tailscale on Raspberry Pi
+curl -fsSL https://tailscale.com/install.sh | sh
+```
 
-| Setting | Value | Notes |
-|---------|-------|-------|
-| Profile Name | MSOC_VPN | Descriptive name |
-| Protocol | WireGuard | Modern VPN protocol |
-| Server Address | your.public.ip | Your server's public IP |
-| Server Port | 51820 | Default WireGuard port |
-| Local Interface | 10.0.0.2 | Client VPN IP address |
-| Local Port | 51820 | Matching port |
-| Private Key | [Generated] | Click to generate |
-| Peer Public Key | [From server] | Server's public key |
-| Allowed IPs | 0.0.0.0/0 | Route all traffic |
+### **Step 2: Authenticate Device**
+```bash
+# Connect to your tailnet (requires auth key or interactive login)
+sudo tailscale up
 
-### **Step 3: Save and Connect**
-1. Click **Save**
-2. Toggle connection to **On**
-3. Verify connection status
+# Or use an auth key for headless setup
+sudo tailscale up --authkey=tskey-auth-xxxxxxxxxxxxx
+```
+
+### **Step 3: Configure for Headless Operation**
+```bash
+# Generate auth key from Tailscale Admin Console
+# https://login.tailscale.com/admin/settings/keys
+
+# Create systemd override for auto-start
+sudo systemctl enable tailscaled
+```
+
+## 📱 **TP-Link NX200 Router (Optional)**
+
+If routing all device traffic through the router's VPN:
+
+1. Access router at `http://tplinkwifi.net`
+2. Install Tailscale via router app store (if supported)
+3. Authenticate with your tailnet
+4. Configure as exit node if needed
 
 ## 🔐 **Security Best Practices**
 
-### **Key Management**
-- Store private keys securely
-- Use different keys for each device
-- Rotate keys periodically
-- Never transmit private keys electronically
+### **ACL Configuration**
+Configure Tailscale ACLs to restrict access:
+
+```json
+{
+  "acls": [
+    {
+      "action": "accept",
+      "src": ["tag:msoc-server"],
+      "dst": ["tag:haris-device:*"]
+    },
+    {
+      "action": "accept",
+      "src": ["tag:haris-device"],
+      "dst": ["tag:msoc-server:22", "tag:msoc-server:3000"]
+    }
+  ],
+  "tagOwners": {
+    "tag:msoc-server": ["autogroup:admin"],
+    "tag:haris-device": ["autogroup:admin"]
+  }
+}
+```
 
 ### **Network Security**
 ```bash
-# On Raspberry Pi, restrict VPN access
-sudo ufw allow from 10.0.0.0/24 to any port 22
-sudo ufw allow from 10.0.0.0/24 to any port 3000
-sudo ufw enable
+# On Raspberry Pi, restrict access to Tailscale interface only
+sudo firewall-cmd --permanent --zone=tailscale --add-service=ssh
+sudo firewall-cmd --permanent --zone=tailscale --add-port=3000/tcp
+sudo firewall-cmd --set-default-zone=drop
+sudo firewall-cmd --reload
 ```
 
 ## 🧪 **Connection Testing**
 
 ### **From Marine_Haris Device**
 ```bash
-# Test VPN connectivity
-ping 10.0.0.1  # Server VPN IP
+# Check Tailscale status
+sudo tailscale status
 
-# Check public IP (should show server IP)
-curl ifconfig.me
+# Get device's Tailscale IP
+tailscale ip -4
+
+# Test connectivity to MSOC server (using Tailscale hostname or IP)
+ping msoc-server
 
 # Test specific services
-ssh user@10.0.0.1  # SSH to server
+ssh user@msoc-server
 ```
 
 ### **From Remote Server**
 ```bash
-# Check connected peers
-sudo wg show
+# List connected devices
+sudo tailscale status
 
-# Ping client
-ping 10.0.0.2
+# Ping the Haris device
+ping haris-vessel-001
 ```
 
 ## 🚨 **Troubleshooting**
 
 | Issue | Solution |
 |-------|----------|
-| No connection | Check firewall rules, verify keys |
-| High latency | Use closer server, optimize MTU |
-| Packet loss | Check cellular signal, adjust timeouts |
-| DNS issues | Use VPN DNS or configure manually |
+| No connection | Check `tailscale status`, re-auth if needed |
+| High latency | Check cellular signal, consider DERP relay |
+| DNS issues | Use MagicDNS or configure custom DNS |
+| Key expired | Re-authenticate with `sudo tailscale login` |
+
+### **Useful Commands**
+```bash
+# Debug connectivity
+sudo tailscale status
+sudo tailscale ping <peer-name>
+
+# Check network interfaces
+ip addr show tailscale0
+
+# View logs
+journalctl -u tailscaled -f
+```
 
 ## 📊 **Monitoring**
 
 ### **Connection Monitoring**
 ```bash
 # Check connection status
-watch -n 5 'sudo wg show'
+watch -n 5 'sudo tailscale status'
 
-# Monitor traffic
-sudo tcpdump -i wg0
+# Monitor traffic on tailscale interface
+sudo tcpdump -i tailscale0
 ```
 
-### **Automated Checks**
+### **Health Checks**
 ```bash
-# Add to crontab
-*/5 * * * * /usr/local/bin/check_vpn.sh
+# Check if tailscaled is running
+systemctl status tailscaled
+
+# Verify connectivity
+tailscale ping --c 3 msoc-server
 ```
 
 ## 🔄 **Maintenance**
 
-### **Key Rotation Schedule**
-- **Initial deployment**: Generate and store keys
-- **Every 90 days**: Rotate keys for security
-- **After compromise**: Immediate key regeneration
+### **Key Management**
+- Tailscale automatically handles key rotation
+- Keys expire based on tailnet settings (default: 180 days)
+- Pre-auth keys can be set to expire or be reusable
 
 ### **Backup Configuration**
 ```bash
-# Backup WireGuard config
-sudo cp /etc/wireguard/wg0.conf /etc/wireguard/wg0.conf.backup
+# Export current ACL (from admin console)
+# https://login.tailscale.com/admin/acls
+
+# List device info
+tailscale status --json > /backup/tailscale-devices.json
 ```
+
+## 🌐 **Tailscale vs WireGuard**
+
+| Feature | Tailscale | WireGuard |
+|---------|-----------|-----------|
+| Setup | Automatic | Manual key management |
+| NAT Traversal | Built-in DERP relays | Requires manual config |
+| Key Rotation | Automatic | Manual |
+| Device Discovery | MagicDNS | Manual IP management |
+| ACLs | Built-in | Firewall rules |
+| Coordination | Managed service | Self-hosted |

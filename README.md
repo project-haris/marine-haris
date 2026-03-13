@@ -13,7 +13,7 @@ Marine_Haris is an edge computing device designed for **Maritime Security Operat
 
 ### **Key Features**
 - ✅ **NMEA 2000 & NMEA 0183 data collection** via PiCAN-M HAT
-- ✅ **Secure VPN transmission** using WireGuard protocol
+- ✅ **Secure VPN transmission** using Tailscale
 - ✅ **Edge processing** with Raspberry Pi 5 + NVMe storage
 - ✅ **Real-time data synchronization** to remote servers
 - ✅ **Tamper-evident design** for security operations
@@ -52,8 +52,8 @@ Marine_Haris is an edge computing device designed for **Maritime Security Operat
 
 3. **Set up VPN connection**
    ```bash
-   # Configure WireGuard client
-   sudo ./config/wireguard/setup_client.sh
+   # Configure Tailscale
+   sudo ./config/tailscale/setup.sh
    ```
 
 4. **Start data collection**
@@ -70,7 +70,7 @@ flowchart LR
     B --> C[Raspberry Pi 5]
     C --> D[Signal K Processing]
     D --> E[Local Storage NVMe]
-    D --> F[WireGuard VPN]
+    D --> F[Tailscale VPN]
     F --> G[Remote MSOC Server]
     
     H[12V Boat Power] --> B
@@ -80,7 +80,7 @@ flowchart LR
 
 ## 🔒 **Security Features**
 
-- **End-to-end encryption** via WireGuard VPN
+- **End-to-end encryption** via Tailscale (WireGuard-based)
 - **Tamper-evident seals** and monitoring
 - **Secure boot** with NVMe encryption
 - **Automatic data wipe** on compromise detection

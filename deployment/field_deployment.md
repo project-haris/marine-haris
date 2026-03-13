@@ -24,8 +24,8 @@ Before traveling to the vessel, confirm the following items are prepared and pac
 
 **Software/Configuration:**
 - [ ] Vessel ID assigned in MSOC database.
-- [ ] WireGuard keys generated and configured in MSOC VPN server.
-- [ ] Device pre-configured with vessel-specific SSH keys and VPN profile.
+- [ ] Tailscale device authorized in MSOC tailnet.
+- [ ] Device pre-configured with vessel-specific SSH keys and Tailscale auth.
 - [ ] Technician has access to MSOC deployment portal for registration.
 
 ## 3. Installation Procedure

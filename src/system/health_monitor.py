@@ -27,14 +27,14 @@ class HealthMonitor:
     def __init__(self, 
                  temp_threshold_c: float = 75.0, 
                  disk_threshold_percent: float = 90.0,
-                 vpn_interface: str = "wg0"):
+                 vpn_interface: str = "tailscale0"):
         """
         Initialize Health Monitor.
         
         Args:
             temp_threshold_c (float): Max allowed CPU temp before alert.
             disk_threshold_percent (float): Max disk usage % before alert.
-            vpn_interface (str): The name of the WireGuard interface to check.
+            vpn_interface (str): The name of the Tailscale interface to check.
         """
         self.temp_threshold = temp_threshold_c
         self.disk_threshold = disk_threshold_percent
@@ -69,23 +69,14 @@ class HealthMonitor:
 
     def check_vpn(self) -> bool:
         """
-        Checks if the WireGuard VPN interface is up and has an IP address.
+        Checks if the Tailscale VPN interface is up and connected.
         """
         try:
-            # Check if interface exists
             result = subprocess.run(
-                ["ip", "link", "show", self.vpn_interface], 
+                ["tailscale", "status"], 
                 capture_output=True, text=True
             )
-            if result.returncode != 0:
-                return False
-            
-            # Check if it has an IP assigned
-            result = subprocess.run(
-                ["ip", "addr", "show", self.vpn_interface"], 
-                capture_output=True, text=True
-            )
-            return "inet " in result.stdout
+            return result.returncode == 0
         except Exception as e:
             logger.error(f"VPN check failed: {e}")
             return False

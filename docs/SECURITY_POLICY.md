@@ -35,10 +35,10 @@ Security updates are applied to the `main` branch. We recommend always using the
 ### **2. Network Security**
 *The device connects via untrusted cellular networks.*
 
-*   **VPN Tunneling**: All outbound traffic is routed strictly through a WireGuard VPN tunnel. No direct internet access is permitted.
+*   **VPN Tunneling**: All outbound traffic is routed strictly through a Tailscale VPN tunnel. No direct internet access is permitted.
     *   *Fail-Closed Policy*: If the VPN tunnel drops, the device loses internet connectivity. It does *not* fall back to the raw cellular connection.
-*   **Firewall (UFW)**: The device runs a strict host-based firewall.
-    *   **Ingress**: Blocked by default. Only SSH (port 22) and Signal K (port 3000) are allowed *exclusively* from the VPN subnet (e.g., `10.0.0.0/24`).
+*   **Firewall (firewalld)**: The device runs a strict host-based firewall.
+    *   **Ingress**: Blocked by default. Only SSH (port 22) and Signal K (port 3000) are allowed *exclusively* from the Tailscale interface.
     *   **Egress**: Allowed only to the VPN server IP and defined monitoring endpoints.
 *   **DDNS/Static IP**: The device does not expose any public ports. It initiates connections outbound only.
 
@@ -46,7 +46,7 @@ Security updates are applied to the `main` branch. We recommend always using the
 *Protecting the integrity and confidentiality of vessel data.*
 
 *   **Encryption at Rest**: The NVMe SSD is encrypted using **LUKS (Linux Unified Key Setup)**. The encryption key is stored in a keyfile on the boot partition (which is itself inaccessible from the outside) or requires manual entry upon boot (depending on deployment mode).
-*   **Encryption in Transit**: All data is encapsulated in WireGuard's encrypted tunnel (ChaCha20-Poly1305).
+*   **Encryption in Transit**: All data is encapsulated in Tailscale's encrypted tunnel (WireGuard-based, ChaCha20-Poly1305).
 *   **Data Sanitization**: If the device is flagged as compromised or is being decommissioned, a `secure-wipe.sh` script utilizes `shred` to overwrite sensitive data directories before disposal.
 
 ### **4. Access Control**
@@ -72,7 +72,7 @@ In the event of a security incident (physical breach, network anomaly, or compro
     *   In extreme cases, the MSOC can trigger a crypto-shred (wipe encryption keys), rendering the NVMe data unreadable.
 3.  **Recovery**:
     *   Restore the device to a known good state by re-imaging the NVMe SSD with the "Golden Image".
-    *   Rotate all WireGuard keys and SSH credentials associated with that node.
+    *   Revoke the device's Tailscale authorization and rotate SSH credentials associated with that node.
 
 ---
 
@@ -102,8 +102,8 @@ Before deploying a Marine_Haris node to a vessel, ensure the following checks ar
 - [ ] **Hardware**: Tamper seals applied and logged.
 - [ ] **Storage**: NVMe SSD is fully encrypted (LUKS).
 - [ ] **Boot**: Bootloader is locked to NVMe only.
-- [ ] **Network**: WireGuard VPN is active and stable.
-- [ ] **Firewall**: UFW is enabled; only VPN subnet ports are open.
+- [ ] **Network**: Tailscale VPN is active and connected.
+- [ ] **Firewall**: firewalld is enabled; only Tailscale interface ports are open.
 - [ ] **Access**: Password authentication is disabled; SSH keys are deployed.
 - [ ] **Updates**: System is updated to the latest supported version (`sudo apt upgrade`).
 

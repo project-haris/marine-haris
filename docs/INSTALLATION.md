@@ -67,7 +67,7 @@ flowchart TD
 sudo apt update && sudo apt upgrade -y
 
 # Install required packages
-sudo apt install -y can-utils wireguard rsync python3-pip
+sudo apt install -y can-utils tailscale firewalld rsync python3-pip
 
 # Enable CAN interface
 sudo ./config/system/enable_can.sh
@@ -83,7 +83,7 @@ sudo ./config/system/enable_can.sh
 ### **3.2 Configure Firewall**
 ```bash
 # Run firewall setup script
-sudo ./config/ufw_rules.sh
+sudo ./config/firewalld_setup.sh
 ```
 
 ## 🔍 **Step 4: Verification**

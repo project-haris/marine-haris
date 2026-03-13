@@ -13,7 +13,7 @@
 
 # --- Configuration ---
 SERVICES=("harisd" "signalk") # List of systemd services to monitor
-VPN_INTERFACE="wg0"
+VPN_INTERFACE="tailscale0"
 LOG_TAG="HARIS_WATCHDOG"
 
 # --- Functions ---
@@ -57,24 +57,19 @@ check_vpn() {
 }
 
 restart_vpn() {
-    log "WARNING: VPN $VPN_INTERFACE is down. Attempting restart..."
+    log "WARNING: Tailscale VPN is down. Attempting restart..."
     
-    # Determine if WireGuard is client-side on Pi or Router-side
-    # This assumes wg-quick is configured on the Pi itself. 
-    # If VPN is on the router, this command won't exist or needs adjustment.
-    
-    if command -v wg-quick &> /dev/null; then
-        wg-quick down "$VPN_INTERFACE" 2>/dev/null
-        wg-quick up "$VPN_INTERFACE"
+    if command -v tailscale &> /dev/null; then
+        systemctl restart tailscaled
         
         sleep 5
         if check_vpn; then
-            log "SUCCESS: VPN tunnel re-established."
+            log "SUCCESS: Tailscale VPN re-established."
         else
-            log "CRITICAL: Failed to re-establish VPN tunnel."
+            log "CRITICAL: Failed to re-establish Tailscale VPN."
         fi
     else
-        log "INFO: VPN management is external (router-side). Cannot restart locally."
+        log "INFO: Tailscale not installed. Cannot restart locally."
     fi
 }
 

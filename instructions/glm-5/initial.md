@@ -392,17 +392,23 @@ Add:
 
 On the Raspberry Pi:
 ```bash
-# Install UFW firewall
-sudo apt install ufw
+# Install firewalld
+sudo apt install firewalld
 
-# Allow SSH (from VPN only)
-sudo ufw allow from 10.0.0.0/24 to any port 22
+# Create Tailscale zone and add interface
+sudo firewall-cmd --permanent --new-zone=tailscale
+sudo firewall-cmd --permanent --zone=tailscale --add-interface=tailscale0
 
-# Allow Signal K web interface
-sudo ufw allow from 10.0.0.0/24 to any port 3000
+# Allow SSH and Signal K from Tailscale
+sudo firewall-cmd --permanent --zone=tailscale --add-service=ssh
+sudo firewall-cmd --permanent --zone=tailscale --add-port=3000/tcp
 
-# Enable firewall
-sudo ufw enable
+# Trust all traffic from Tailscale interface
+sudo firewall-cmd --permanent --zone=tailscale --set-target=ACCEPT
+
+# Set default zone to drop (deny all incoming)
+sudo firewall-cmd --set-default-zone=drop
+sudo firewall-cmd --reload
 ```
 
 ### **Step 5.2: Automatic Updates**
