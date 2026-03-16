@@ -124,7 +124,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📞 **Support**
 
-For technical support or security concerns, contact: ahmdngi@hotmail.com
+For technical support or security concerns, contact: haris@ahmdngi.io
 
 ---
 
