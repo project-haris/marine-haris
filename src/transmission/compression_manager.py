@@ -1,7 +1,7 @@
 #This module handles data compression. Given the repetitive nature of NMEA data, compression significantly reduces bandwidth usage and storage costs.
 #!/usr/bin/env python3
 """
-Compression Manager for Marine_Haris
+Compression Manager for Project Haris
 
 Handles the compression of data logs before transmission to minimize bandwidth usage.
 Uses standard GZIP compression for a balance of speed and efficiency.

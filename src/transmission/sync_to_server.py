@@ -1,9 +1,9 @@
 #This module handles the bulk synchronization of historical data logs. It uses rsync over SSH for efficient, delta-based transfers, which is critical for intermittent marine connectivity.
 #!/usr/bin/env python3
 """
-Sync to Server for Marine_Haris
+Sync to Server for Project Haris
 
-Handles batch synchronization of data logs to the remote MSOC server.
+Handles batch synchronization of data logs to the remote M-SOC server.
 Uses rsync over SSH for efficient, resumable transfers inside the VPN tunnel.
 """
 
@@ -24,8 +24,8 @@ class SyncManager:
         Initialize Sync Manager.
         
         Args:
-            remote_user (str): SSH username on the MSOC server.
-            remote_host (str): MSOC server IP (VPN IP, e.g., 10.0.0.1).
+            remote_user (str): SSH username on the M-SOC server.
+            remote_host (str): M-SOC server IP (VPN IP, e.g., 10.0.0.1).
             remote_path (str): Destination directory on the server.
             ssh_key_path (str): Path to the SSH private key for passwordless login.
         """
@@ -111,7 +111,7 @@ class SyncManager:
 if __name__ == "__main__":
     # Configure based on your VPN settings
     syncer = SyncManager(
-        remote_user="msoc_admin",
+        remote_user="M-SOC_admin",
         remote_host="10.0.0.1", # VPN IP of the server
         remote_path="/data/vessel_logs"
     )

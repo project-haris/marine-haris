@@ -1,8 +1,8 @@
-#This script acts as the "vital signs" monitor for the device. It checks system resources (CPU temperature, storage), service availability, and VPN connectivity. If critical thresholds are exceeded, it logs alerts for transmission to the MSOC.
+#This script acts as the "vital signs" monitor for the device. It checks system resources (CPU temperature, storage), service availability, and VPN connectivity. If critical thresholds are exceeded, it logs alerts for transmission to the M-SOC.
 
 #!/usr/bin/env python3
 """
-Health Monitor for Marine_Haris
+Health Monitor for Project Haris
 
 Monitors system vitals (CPU temp, Disk space) and service status.
 Acts as a local watchdog to ensure system integrity.
@@ -151,7 +151,7 @@ def main():
         # If there are alerts, we could trigger the webhook sender here
         if report["alerts"]:
             logger.warning(f"System Alerts Detected: {report['alerts']}")
-            # TODO: Import WebhookSender and send alert to MSOC if VPN is up
+            # TODO: Import WebhookSender and send alert to M-SOC if VPN is up
         
         # Log healthy status periodically (every 5 mins)
         logger.info(f"Health Check: Temp {report['metrics'].get('cpu_temp_c')}°C | Disk {report['metrics'].get('disk_usage_percent')}% | VPN {report['metrics'].get('vpn_connected')}")

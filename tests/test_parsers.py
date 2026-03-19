@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 #This script provides unit tests for the NMEA 0183 and NMEA 2000 parsing logic to ensure data integrity and correct interpretation of sensor data.
 """
-Unit Tests for Marine_Haris Parsers
+Unit Tests for Project Haris Parsers
 Tests the logic of NMEA0183 and NMEA2000 parsing without requiring physical hardware.
 """
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # This script tests the transmission components (Webhook and Sync) by mocking network calls and file system operations. This ensures the logic is sound without requiring a live server.
 """
-Unit Tests for Marine_Haris Transmission Modules
+Unit Tests for Project Haris Transmission Modules
 Tests Compression, Webhook sending, and Sync logic.
 """
 

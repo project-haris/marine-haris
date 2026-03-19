@@ -1,4 +1,4 @@
-# Raspberry Pi Configuration for Marine_Haris
+# Raspberry Pi Configuration for Project Haris
 # This is the boot configuration for the Raspberry Pi. It enables the NVMe drive, the PiCAN-M HAT (CAN Bus), and the serial ports.
 # Add these lines to /boot/firmware/config.txt
 

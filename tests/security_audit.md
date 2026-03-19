@@ -1,4 +1,4 @@
-# Security Audit Checklist: Marine_Haris
+# Security Audit Checklist: Project Haris
 
 **Vessel ID:** _______________
 **Auditor:** _______________
@@ -8,7 +8,7 @@
 
 *   [ ] **Enclosure Integrity**: Is the device housed in a sealed, IP67-rated enclosure?
 *   [ ] **Tamper Seals**: Are unique, serialized tamper seals applied to all access screws?
-*   [ ] **Seal Log**: Have the seal serial numbers been logged in the MSOC database?
+*   [ ] **Seal Log**: Have the seal serial numbers been logged in the M-SOC database?
 *   [ ] **Port Access**: Are all unused physical ports (USB, Ethernet) physically blocked or disabled in software?
 *   [ ] **Power**: Is the power connection secured to prevent accidental disconnection?
 
@@ -48,4 +48,4 @@
 ---
 
 **Auditor Signature:** __________________
-**MSOC Supervisor Approval:** __________________
+**M-SOC Supervisor Approval:** __________________

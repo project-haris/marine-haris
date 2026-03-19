@@ -1,7 +1,7 @@
 #!/bin/bash
 #This shell script is a robust "watchdog" designed to be run via cron. It verifies that critical services are running and attempts to restart them if they have failed. It also handles VPN recovery logic.
 
-# Auto-Restart / Watchdog Script for Marine_Haris
+# Auto-Restart / Watchdog Script for Project Haris
 # 
 # Description: Checks critical services and VPN status. 
 #              Attempts to restart failed components.

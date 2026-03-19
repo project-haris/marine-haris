@@ -1,12 +1,12 @@
 #!/bin/bash
-# Firewalld Setup Script for Marine_Haris
+# Firewalld Setup Script for Project Haris
 # Policy: Deny All Incoming, Allow Outgoing, Allow Tailscale Only
 # This script automates the setup of firewalld. It implements the Fail-Closed security policy: 
 # denying all incoming traffic by default and only allowing connections from the trusted Tailscale interface.
 
 set -e
 
-echo "--- Marine_Haris Firewalld Setup ---"
+echo "--- Project Haris Firewalld Setup ---"
 
 # Check if running as root
 if [ "$EUID" -ne 0 ]; then 

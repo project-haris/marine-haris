@@ -1,12 +1,12 @@
-# Tamper Evidence Protocol: Marine_Haris
+# Tamper Evidence Protocol: Project Haris
 
 ## 1. Purpose
-This document establishes the procedures for applying, inspecting, and managing tamper-evident security measures for Marine_Haris edge devices. These measures are critical for maintaining the integrity of maritime security data and detecting unauthorized physical access.
+This document establishes the procedures for applying, inspecting, and managing tamper-evident security measures for Project Haris edge devices. These measures are critical for maintaining the integrity of maritime security data and detecting unauthorized physical access.
 
 ## 2. Security Seal Specifications
 
 ### 2.1 Seal Requirements
-All seals used for Marine_Haris devices must meet the following minimum specifications:
+All seals used for Project Haris devices must meet the following minimum specifications:
 - **Type**: Holographic void seals or high-security barrier seals
 - **Material**: Destructible vinyl or frangible material that shows visible evidence of tampering
 - **Adhesion**: Pressure-sensitive adhesive with minimum 24-hour cure time
@@ -49,7 +49,7 @@ Before applying seals, verify:
 4. Record the seal's serial number.
 
 ### 3.3 Serial Number Recording
-All seal serial numbers must be recorded in the MSOC Security Database within 1 hour of application:
+All seal serial numbers must be recorded in the M-SOC Security Database within 1 hour of application:
 ```sql
 INSERT INTO security_seals (vessel_id, seal_type, serial_number, applied_by, applied_date) 
 VALUES ('VESSEL-001', 'HS-VOID-500', 'A1234567', 'TECH-NAME', '2023-11-15 14:30:00');
@@ -58,7 +58,7 @@ VALUES ('VESSEL-001', 'HS-VOID-500', 'A1234567', 'TECH-NAME', '2023-11-15 14:30:
 ## 4. Inspection Protocol
 
 ### 4.1 Routine Inspections
-Marine_Haris devices must be inspected for tamper evidence during:
+Project Haris devices must be inspected for tamper evidence during:
 - Initial installation (pre-sealing)
 - Monthly maintenance visits (if applicable)
 - Any service call or repair
@@ -66,7 +66,7 @@ Marine_Haris devices must be inspected for tamper evidence during:
 
 ### 4.2 Inspection Checklist
 ```markdown
-## Marine_Haris Tamper Inspection Form
+## Project Haris Tamper Inspection Form
 
 **Vessel ID:** _______________
 **Date:** _______________
@@ -120,19 +120,19 @@ Tampering may be indicated by:
    - Photograph the device from multiple angles
    - Note serial numbers of affected seals
    - Collect any physical evidence
-4. Immediately report to the MSOC Security Team:
+4. Immediately report to the M-SOC Security Team:
    - Email: security@marineharis-ops.org
    - Phone: +1-555-MARIS-SEC
 5. Complete a Tamper Incident Report within 24 hours.
 
 ### 5.3 Software-Based Detection
-Marine_Haris devices include software tamper detection that monitors:
+Project Haris devices include software tamper detection that monitors:
 - Enclosure opening sensor (if equipped)
 - Unexpected USB device connections
 - Changes to critical system files
 - Unauthorized login attempts
 
-These are logged and can trigger alerts to the MSOC.
+These are logged and can trigger alerts to the M-SOC.
 
 ## 6. Seal Replacement Procedures
 
@@ -148,7 +148,7 @@ Seals may only be replaced by authorized personnel during:
 3. Remove old seals carefully, preserving serial numbers.
 4. Perform required maintenance or repairs.
 5. Apply new seals following the Application Procedures (Section 3).
-6. Update MSOC database with new seal information.
+6. Update M-SOC database with new seal information.
 
 ## 7. Seal Inventory Management
 
@@ -164,7 +164,7 @@ All security seals must be:
 
 ## 8. Training Requirements
 
-All personnel handling Marine_Haris devices must complete:
+All personnel handling Project Haris devices must complete:
 - Tamper Evidence Awareness Training (online module)
 - Practical Seal Application Exercise
 - Annual refresher training
@@ -179,7 +179,7 @@ All tamper evidence records must be retained for a minimum of **5 years**, inclu
 - Training records
 
 ### 9.2 Audit Schedule
-The MSOC Security Team will conduct random audits of:
+The M-SOC Security Team will conduct random audits of:
 - Seal application records (monthly)
 - Inspection documentation (quarterly)
 - Physical seal integrity (during field visits)
@@ -188,12 +188,12 @@ The MSOC Security Team will conduct random audits of:
 
 - ISO 17712:2013 - Freight containers — Mechanical seals
 - Maritime Security Regulations (MSR) Section 12.4
-- MSOC Physical Security Policy
+- M-SOC Physical Security Policy
 
 ---
 
 **Document Control:**
 - Version: 1.0
 - Last Updated: [Current Date]
-- Approved By: [MSOC Security Director]
+- Approved By: [M-SOC Security Director]
 - Next Review Date: [One Year from Current Date]

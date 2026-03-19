@@ -1,14 +1,14 @@
-# Architecture Overview: Marine_Haris
+# Architecture Overview: Project Haris
 
 ## 1. System Philosophy
 
-The **Marine_Haris** architecture is built on the principle of **Edge Computing** combined with **Secure Tunneling**. Unlike traditional IoT devices that rely on cloud processing, Marine_Haris processes high-bandwidth NMEA data locally on the vessel, transmitting only relevant, processed, or buffered data to the Maritime Security Operations Center (MSOC). This reduces latency, lowers cellular data costs, and ensures operation during connectivity blackouts.
+The **Project Haris** architecture is built on the principle of **Edge Computing** combined with **Secure Tunneling**. Unlike traditional IoT devices that rely on cloud processing, Project Haris processes high-bandwidth NMEA data locally on the vessel, transmitting only relevant, processed, or buffered data to the Maritime Security Operations Center (M-SOC). This reduces latency, lowers cellular data costs, and ensures operation during connectivity blackouts.
 
 ## 2. High-Level Architecture Diagram
 
 ```mermaid
 flowchart TD
-    subgraph VESSEL ["Vessel Edge Node (Marine_Haris)"]
+    subgraph VESSEL ["Vessel Edge Node (Project Haris)"]
         direction TB
         SENSORS["NMEA 2000/0183 Sensors"] --> HAT["PiCAN-M HAT (CAN/Serial)"]
         HAT --> RPI["Raspberry Pi 5 (Compute)"]
@@ -17,7 +17,7 @@ flowchart TD
         ROUTER --> |"Cellular 4G/5G"| INTERNET(("Internet"))
     end
 
-    subgraph MSOC ["Maritime Security Operations Center"]
+    subgraph M-SOC ["Maritime Security Operations Center"]
         direction TB
         VPN_SERVER["Tailscale Node"] --> DATA_LAKE["Central Data Lake"]
         DATA_LAKE --> ANALYTICS["Security Analytics"]
@@ -31,7 +31,7 @@ flowchart TD
     LAYER3["Data Security (LUKS Encryption)"]
     
     style VESSEL fill:#e1f5fe,stroke:#01579b,stroke-width:2px
-    style MSOC fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px
+    style M-SOC fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px
 ```
 
 ## 3. Component Architecture
@@ -90,7 +90,7 @@ The device creates a secure enclave on the vessel.
 Communication is designed to be **Fail-Closed**.
 1.  **Initiation**: The Raspberry Pi (or Router) initiates an outbound connection via Tailscale.
 2.  **Encryption**: All TCP/UDP traffic is encapsulated within the Tailscale tunnel (WireGuard-based).
-3.  **Isolation**: The MSOC sees the device as a Tailscale IP address (e.g., `100.x.x.x`), effectively bypassing the public internet's routing tables for internal services.
+3.  **Isolation**: The M-SOC sees the device as a Tailscale IP address (e.g., `100.x.x.x`), effectively bypassing the public internet's routing tables for internal services.
 
 ### 4.3 Firewall Logic (firewalld)
 The Raspberry Pi enforces strict traffic rules using firewalld:
@@ -123,9 +123,9 @@ The data flow is designed for resilience in low-bandwidth environments.
     *   Processed data is written to the local NVMe database (InfluxDB).
     *   This acts as a buffer; if the internet fails, data is safely stored locally.
 5.  **Transmission**:
-    *   The `sync_agent` attempts to push data to the MSOC via the VPN.
+    *   The `sync_agent` attempts to push data to the M-SOC via the VPN.
     *   Uses **rsync-over-SSH** or **HTTP POST** to a secure endpoint.
-    *   Upon successful receipt confirmation by the MSOC, local data is flagged for deletion or archival.
+    *   Upon successful receipt confirmation by the M-SOC, local data is flagged for deletion or archival.
 
 ## 6. Power Management
 
@@ -153,7 +153,7 @@ sequenceDiagram
 
 ## 7. Physical Deployment Topology
 
-For the **Marine_Haris** device to be effective, its placement on the vessel's network is critical.
+For the **Project Haris** device to be effective, its placement on the vessel's network is critical.
 
 *   **Placement**: Installed in a protected, dry location (bridge or electronics room).
 *   **Connection**: Connected to the NMEA 2000 **Backbone** via a Drop Cable.
@@ -161,4 +161,4 @@ For the **Marine_Haris** device to be effective, its placement on the vessel's n
 
 ---
 
-*This architecture ensures that Marine_Haris is not just a data collector, but a secure, resilient computing node capable of operating in the harsh and variable conditions of maritime environments.*
+*This architecture ensures that Project Haris is not just a data collector, but a secure, resilient computing node capable of operating in the harsh and variable conditions of maritime environments.*

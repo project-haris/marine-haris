@@ -1,9 +1,9 @@
 #This module handles real-time, event-driven transmission of critical data (like alerts or high-frequency state updates) via HTTP POST over the VPN.
 #!/usr/bin/env python3
 """
-Webhook Sender for Marine_Haris
+Webhook Sender for Project Haris
 
-Sends real-time JSON payloads to the MSOC via HTTP POST.
+Sends real-time JSON payloads to the M-SOC via HTTP POST.
 Used for alerts, status updates, or small data packets that shouldn't wait for batch sync.
 """
 
@@ -21,7 +21,7 @@ class WebhookSender:
         Initialize Webhook Sender.
         
         Args:
-            endpoint_url (str): The MSOC API endpoint (e.g., https://msoc.internal/api/ingest).
+            endpoint_url (str): The M-SOC API endpoint (e.g., https://M-SOC.internal/api/ingest).
             auth_token (str): Optional Bearer token for authentication.
             timeout (int): Request timeout in seconds.
         """
@@ -81,7 +81,7 @@ class WebhookSender:
 
 # --- Usage Example ---
 if __name__ == "__main__":
-    # Inside the VPN, this would be the internal IP or domain of the MSOC
+    # Inside the VPN, this would be the internal IP or domain of the M-SOC
     sender = WebhookSender(
         endpoint_url="http://10.0.0.1:8080/api/v1/events",
         auth_token="super_secret_token"

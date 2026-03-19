@@ -1,7 +1,7 @@
 # This module is designed to be robust, handling the specific quirks of NMEA 0183 (like variable baud rates and checksum validation) and converting the raw string data into a standardized format suitable for your security database.
 #!/usr/bin/env python3
 """
-NMEA 0183 Parser for Marine_Haris
+NMEA 0183 Parser for Project Haris
 Reads serial data from the PiCAN-M screw terminal (ttyS0) and parses standard NMEA sentences.
 """
 
@@ -353,4 +353,4 @@ if __name__ == "__main__":
 #    # Example for high-speed serial
 #    parser = NMEA0183Parser(port='/dev/ttyS0', baudrate=38400)
 #    ```
-#3.  **Data Consolidation**: This parser returns individual data objects per sentence. In your main application logic (e.g., inside `harisd`), you will likely want to aggregate these into a single "Vessel State" object before sending it to the MSOC, as different sensors broadcast at different intervals (e.g., GPS might update once per second, heading 10 times per second).
+#3.  **Data Consolidation**: This parser returns individual data objects per sentence. In your main application logic (e.g., inside `harisd`), you will likely want to aggregate these into a single "Vessel State" object before sending it to the M-SOC, as different sensors broadcast at different intervals (e.g., GPS might update once per second, heading 10 times per second).

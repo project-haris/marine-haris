@@ -1,9 +1,9 @@
 #This module serves as the bridge between your custom NMEA parsers and the Signal K ecosystem. It converts the standardized NMEAData objects into Signal K JSON deltas and transmits them to the Signal K server running on the vessel.
-#It also includes a listener component, allowing Marine_Haris to consume aggregated data back from Signal K if needed (useful for accessing data from other sources like weather or AIS).
+#It also includes a listener component, allowing Project Haris to consume aggregated data back from Signal K if needed (useful for accessing data from other sources like weather or AIS).
 
 #!/usr/bin/env python3
 """
-Signal K Ingestor for Marine_Haris
+Signal K Ingestor for Project Haris
 
 This script acts as a bridge between the custom NMEA parsers and the Signal K server.
 1.  **Producer Mode**: Converts NMEAData objects into Signal K Delta format and pushes them to the server.
@@ -119,7 +119,7 @@ class SignalKMapper:
             "context": context,
             "updates": [{
                 "source": {
-                    "label": "Marine_Haris",
+                    "label": "Project Haris",
                     "type": "NMEA0183"
                 },
                 "timestamp": data.timestamp.isoformat() + "Z",

@@ -1,8 +1,8 @@
-# Security Policy for Marine_Haris
+# Security Policy for Project Haris
 
 ## 📜 **Overview**
 
-**Marine_Haris** (derived from Arabic "Haris" حارس, meaning "Guardian") is designed with a **Security-First Architecture**. As an edge device operating in remote maritime environments, it is a potential target for physical tampering and cyber intrusion. This document outlines the security protocols, hardening procedures, and incident response plans enforced for this project.
+**Project Haris** (derived from Arabic "Haris" حارس, meaning "Guardian") is designed with a **Security-First Architecture**. As an edge device operating in remote maritime environments, it is a potential target for physical tampering and cyber intrusion. This document outlines the security protocols, hardening procedures, and incident response plans enforced for this project.
 
 ## 🛡️ **Security Architecture Principles**
 
@@ -28,7 +28,7 @@ Security updates are applied to the `main` branch. We recommend always using the
 ### **1. Physical Security**
 *The device operates in unattended environments (vessels).*
 
-*   **Tamper-Evident Enclosure**: The device must be housed in a sealed, IP67-rated enclosure. Use unique, serialized security seals on all access screws. A log of seal numbers must be maintained by the MSOC.
+*   **Tamper-Evident Enclosure**: The device must be housed in a sealed, IP67-rated enclosure. Use unique, serialized security seals on all access screws. A log of seal numbers must be maintained by the M-SOC.
 *   **Tamper Detection Script**: The system runs a background service to detect hardware changes (e.g., USB devices, enclosure opening sensors).
 *   **Secure Boot**: The Raspberry Pi 5 bootloader is configured to restrict boot media to the internal NVMe only (disabling USB/SD boot) to prevent physical injection attacks.
 
@@ -63,13 +63,13 @@ Security updates are applied to the `main` branch. We recommend always using the
 
 In the event of a security incident (physical breach, network anomaly, or compromise):
 
-1.  **Detection**: Automated scripts alert the MSOC if:
+1.  **Detection**: Automated scripts alert the M-SOC if:
     *   The VPN connection is unstable for > 15 minutes.
     *   Unknown USB devices are detected.
     *   File integrity checks (using `AIDE`) detect modifications to critical configuration files.
 2.  **Containment**:
-    *   The MSOC can remotely trigger a "Kill Switch" script that disables the data collection services and shuts down network interfaces.
-    *   In extreme cases, the MSOC can trigger a crypto-shred (wipe encryption keys), rendering the NVMe data unreadable.
+    *   The M-SOC can remotely trigger a "Kill Switch" script that disables the data collection services and shuts down network interfaces.
+    *   In extreme cases, the M-SOC can trigger a crypto-shred (wipe encryption keys), rendering the NVMe data unreadable.
 3.  **Recovery**:
     *   Restore the device to a known good state by re-imaging the NVMe SSD with the "Golden Image".
     *   Revoke the device's Tailscale authorization and rotate SSH credentials associated with that node.
@@ -78,7 +78,7 @@ In the event of a security incident (physical breach, network anomaly, or compro
 
 ## 📝 **Reporting a Vulnerability**
 
-We take the security of Marine_Haris seriously. If you discover a vulnerability, please report it responsibly.
+We take the security of Project Haris seriously. If you discover a vulnerability, please report it responsibly.
 
 **Please do NOT open a public GitHub Issue for security vulnerabilities.**
 
@@ -97,7 +97,7 @@ We commit to:
 
 ## ✅ **Security Checklist for Deployment**
 
-Before deploying a Marine_Haris node to a vessel, ensure the following checks are passed:
+Before deploying a Project Haris node to a vessel, ensure the following checks are passed:
 
 - [ ] **Hardware**: Tamper seals applied and logged.
 - [ ] **Storage**: NVMe SSD is fully encrypted (LUKS).

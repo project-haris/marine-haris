@@ -1,7 +1,7 @@
-# NMEA 2000 Wiring Diagram: Marine_Haris
+# NMEA 2000 Wiring Diagram: Project Haris
 
 ## 1. Overview
-This document details the wiring procedure for connecting the **Marine_Haris** edge device to a vessel's NMEA 2000 backbone using the PiCAN-M HAT.
+This document details the wiring procedure for connecting the **Project Haris** edge device to a vessel's NMEA 2000 backbone using the PiCAN-M HAT.
 
 ## 2. Connector Specification
 The PiCAN-M HAT features a standard **Micro-C (M12-5)** female connector.

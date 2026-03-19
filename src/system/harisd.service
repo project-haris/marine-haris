@@ -1,6 +1,6 @@
 [Unit]
-Description=Marine_Haris Data Collection Daemon
-Documentation=https://github.com/ahmdngi/Marine_Haris
+Description=Project Haris Data Collection Daemon
+Documentation=https://github.com/ahmdngi/marine_haris
 After=network.target tailscaled.service
 Wants=tailscaled.service
 

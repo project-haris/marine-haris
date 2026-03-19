@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-NMEA 2000 Parser for Marine_Haris
+NMEA 2000 Parser for Project Haris
 Parses CAN bus data from PiCAN-M HAT
 """
 

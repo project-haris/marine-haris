@@ -1,19 +1,19 @@
-Here are the deployment documentation files for the `deployment/` directory. These guides are designed for field technicians and security personnel responsible for installing and maintaining the **Marine_Haris** systems.
+Here are the deployment documentation files for the `deployment/` directory. These guides are designed for field technicians and security personnel responsible for installing and maintaining the **Project Haris** systems.
 
 ### `deployment/field_deployment.md`
 
 ```markdown
-# Field Deployment Guide: Marine_Haris
+# Field Deployment Guide: Project Haris
 
 ## 1. Purpose
-This document provides step-by-step instructions for the physical installation, commissioning, and verification of a Marine_Haris edge device on a target vessel. It is intended for authorized field technicians and MSOC personnel.
+This document provides step-by-step instructions for the physical installation, commissioning, and verification of a Project Haris edge device on a target vessel. It is intended for authorized field technicians and M-SOC personnel.
 
 ## 2. Pre-Deployment Checklist
 
 Before traveling to the vessel, confirm the following items are prepared and packed:
 
 **Hardware Kit:**
-- [ ] Marine_Haris Unit (Pre-assembled: Pi 5 + PiCAN-M + NVMe + Case)
+- [ ] Project Haris Unit (Pre-assembled: Pi 5 + PiCAN-M + NVMe + Case)
 - [ ] NMEA 2000 Drop Cable (Micro-C Male to Male, 6ft)
 - [ ] NMEA 0183 Connection Cable (if required, 2-core shielded)
 - [ ] TP-Link Archer NX200 Router (with active SIM card)
@@ -23,10 +23,10 @@ Before traveling to the vessel, confirm the following items are prepared and pac
 - [ ] Installation Tools (Screwdriver set, wire strippers, multimeter)
 
 **Software/Configuration:**
-- [ ] Vessel ID assigned in MSOC database.
-- [ ] Tailscale device authorized in MSOC tailnet.
+- [ ] Vessel ID assigned in M-SOC database.
+- [ ] Tailscale device authorized in M-SOC tailnet.
 - [ ] Device pre-configured with vessel-specific SSH keys and Tailscale auth.
-- [ ] Technician has access to MSOC deployment portal for registration.
+- [ ] Technician has access to M-SOC deployment portal for registration.
 
 ## 3. Installation Procedure
 
@@ -64,7 +64,7 @@ Choose a location that meets the following criteria:
 ## 4. Commissioning & Verification
 
 ### 4.1 Power-On Sequence
-1. Apply power to the Marine_Haris unit.
+1. Apply power to the Project Haris unit.
 2. Observe the Pi's **green activity LED** - it should flash intermittently during boot.
 3. Wait approximately **60 seconds** for the system to boot fully.
 
@@ -98,26 +98,26 @@ Choose a location that meets the following criteria:
    ```
    This should return a JSON object with navigation data.
 
-### 4.4 MSOC Registration
-1. Access the MSOC deployment portal via the VPN connection.
+### 4.4 M-SOC Registration
+1. Access the M-SOC deployment portal via the VPN connection.
 2. Register the device using the **Vessel ID**.
-3. Confirm the device appears as "Online" in the MSOC dashboard.
-4. Verify data is being received in the MSOC's data lake.
+3. Confirm the device appears as "Online" in the M-SOC dashboard.
+4. Verify data is being received in the M-SOC's data lake.
 
 ## 5. Physical Security & Tamper Evidence
 
 1. Once verified, place the device in its final operating position.
 2. Apply **tamper-evident seals** according to the [Tamper Evidence Protocol](tamper_evidence.md).
-3. Record seal serial numbers in the MSOC database.
+3. Record seal serial numbers in the M-SOC database.
 4. Take photographs of the installation for the vessel's records.
 
 ## 6. Handover & Documentation
 
-1. Complete the **Installation Report Form** in the MSOC portal.
-2. Provide the vessel operator with the **Marine_Haris Quick Reference Card** containing:
+1. Complete the **Installation Report Form** in the M-SOC portal.
+2. Provide the vessel operator with the **Project Haris Quick Reference Card** containing:
    - Device location
    - Power requirements
-   - Emergency contact for MSOC
+   - Emergency contact for M-SOC
 3. Instruct the operator **NOT** to move, open, or modify the device.
 
 ## 7. Troubleshooting Common Issues
@@ -136,12 +136,12 @@ Choose a location that meets the following criteria:
 1. **DO NOT** attempt to repair or power on.
 2. Disconnect power immediately.
 3. Secure the area and restrict access.
-4. Contact the MSOC Security Team for further instructions.
+4. Contact the M-SOC Security Team for further instructions.
 
 ---
 
 **Document Control:**
 - Version: 1.0
 - Last Updated: [Current Date]
-- Approved By: [MSOC Technical Director]
+- Approved By: [M-SOC Technical Director]
 

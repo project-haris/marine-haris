@@ -1,7 +1,7 @@
-# NMEA 0183 Wiring Diagram: Marine_Haris
+# NMEA 0183 Wiring Diagram: Project Haris
 
 ## 1. Overview
-This document details the wiring procedure for connecting legacy NMEA 0183 devices (GPS, Depth Sounders, Wind Instruments) to the **Marine_Haris** device via the PiCAN-M HAT's screw terminal block.
+This document details the wiring procedure for connecting legacy NMEA 0183 devices (GPS, Depth Sounders, Wind Instruments) to the **Project Haris** device via the PiCAN-M HAT's screw terminal block.
 
 ## 2. Connector Specification
 The PiCAN-M HAT provides a **5-way Screw Terminal (J3)** for NMEA 0183 (RS-422) connections.
@@ -17,7 +17,7 @@ The PiCAN-M HAT provides a **5-way Screw Terminal (J3)** for NMEA 0183 (RS-422) 
 | **GND** | Ground | Signal Ground Reference |
 
 ## 4. Standard "Listener" Wiring (Data Collection)
-For the Marine_Haris device to **collect** data from a sensor (e.g., a GPS plotter), the sensor acts as the "Talker" and the PiCAN-M acts as the "Listener".
+For the Project Haris device to **collect** data from a sensor (e.g., a GPS plotter), the sensor acts as the "Talker" and the PiCAN-M acts as the "Listener".
 
 **Wiring Connection Table:**
 
@@ -44,7 +44,7 @@ For the Marine_Haris device to **collect** data from a sensor (e.g., a GPS plott
 ```
 
 ## 5. Bi-Directional Wiring (Advanced)
-If the Marine_Haris device needs to **send commands** to the sensor (rare for security logging), use the OUT terminals.
+If the Project Haris device needs to **send commands** to the sensor (rare for security logging), use the OUT terminals.
 
 | Sensor Side (Listener) | PiCAN-M Terminal (Talker) |
 | :--- | :--- |

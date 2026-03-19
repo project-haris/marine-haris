@@ -1,8 +1,8 @@
 #!/bin/bash
-# Tailscale Setup Script for Marine_Haris
+# Tailscale Setup Script for Project Haris
 # This script installs and configures Tailscale on the Raspberry Pi.
 
-echo "--- Marine_Haris Tailscale Setup ---"
+echo "--- Project Haris Tailscale Setup ---"
 
 # Check if running as root
 if [ "$EUID" -ne 0 ]; then 

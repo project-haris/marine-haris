@@ -4,15 +4,15 @@
 
 ```mermaid
 flowchart LR
-    A[Marine_Haris Device] --> B[TP-Link NX200 Router]
+    A[Project Haris Device] --> B[TP-Link NX200 Router]
     B --> C[Tailscale Client]
     C --> D((Internet<br/>Cellular))
     D --> E[Tailscale Coordination<br/>Server]
-    E --> F[Remote MSOC Server<br/>Tailscale Node]
-    F --> G[MSOC Network]
+    E --> F[Remote M-SOC Server<br/>Tailscale Node]
+    F --> G[M-SOC Network]
 ```
 
-## 🖥️ **Server Configuration (Remote MSOC)**
+## 🖥️ **Server Configuration (Remote M-SOC)**
 
 ### **Step 1: Install Tailscale**
 ```bash
@@ -24,10 +24,10 @@ sudo tailscale up
 ```
 
 ### **Step 2: Configure as Subnet Router (Optional)**
-If the MSOC server needs to provide access to the internal network:
+If the M-SOC server needs to provide access to the internal network:
 
 ```bash
-# Advertise routes to internal MSOC network
+# Advertise routes to internal M-SOC network
 sudo tailscale up --advertise-routes=192.168.1.0/24
 
 # Enable IP forwarding
@@ -41,7 +41,7 @@ echo "net.ipv4.ip_forward=1" | sudo tee -a /etc/sysctl.conf
 3. Click "Edit route settings"
 4. Approve the advertised routes
 
-## 📡 **Client Configuration (Marine_Haris Device)**
+## 📡 **Client Configuration (Project Haris Device)**
 
 ### **Step 1: Install Tailscale**
 ```bash
@@ -86,17 +86,17 @@ Configure Tailscale ACLs to restrict access:
   "acls": [
     {
       "action": "accept",
-      "src": ["tag:msoc-server"],
+      "src": ["tag:M-SOC-server"],
       "dst": ["tag:haris-device:*"]
     },
     {
       "action": "accept",
       "src": ["tag:haris-device"],
-      "dst": ["tag:msoc-server:22", "tag:msoc-server:3000"]
+      "dst": ["tag:M-SOC-server:22", "tag:M-SOC-server:3000"]
     }
   ],
   "tagOwners": {
-    "tag:msoc-server": ["autogroup:admin"],
+    "tag:M-SOC-server": ["autogroup:admin"],
     "tag:haris-device": ["autogroup:admin"]
   }
 }
@@ -113,7 +113,7 @@ sudo firewall-cmd --reload
 
 ## 🧪 **Connection Testing**
 
-### **From Marine_Haris Device**
+### **From Project Haris Device**
 ```bash
 # Check Tailscale status
 sudo tailscale status
@@ -121,11 +121,11 @@ sudo tailscale status
 # Get device's Tailscale IP
 tailscale ip -4
 
-# Test connectivity to MSOC server (using Tailscale hostname or IP)
-ping msoc-server
+# Test connectivity to M-SOC server (using Tailscale hostname or IP)
+ping M-SOC-server
 
 # Test specific services
-ssh user@msoc-server
+ssh user@M-SOC-server
 ```
 
 ### **From Remote Server**
@@ -176,7 +176,7 @@ sudo tcpdump -i tailscale0
 systemctl status tailscaled
 
 # Verify connectivity
-tailscale ping --c 3 msoc-server
+tailscale ping --c 3 M-SOC-server
 ```
 
 ## 🔄 **Maintenance**

@@ -1,4 +1,4 @@
-# Hardware Assembly Guide: Marine_Haris Edge Device
+# Hardware Assembly Guide: Project Haris Edge Device
 
 ## 📋 **Table of Contents**
 1. [Introduction](#introduction)
@@ -13,9 +13,9 @@
 
 ## 1. Introduction
 
-This guide provides detailed instructions for assembling the **Marine_Haris** maritime security edge device. The system is designed for deployment on vessels to collect NMEA 2000/0183 data and transmit it securely to a Maritime Security Operations Center (MSOC).
+This guide provides detailed instructions for assembling the **Project Haris** maritime security edge device. The system is designed for deployment on vessels to collect NMEA 2000/0183 data and transmit it securely to a Maritime Security Operations Center (M-SOC).
 
-**Target Audience**: Authorized field technicians and MSOC personnel
+**Target Audience**: Authorized field technicians and M-SOC personnel
 **Estimated Assembly Time**: 60-90 minutes
 **Difficulty Level**: Intermediate
 
@@ -343,7 +343,7 @@ Enclosure Layout (Top View):
 **5.7.3 Tamper Seals**
 
 1. Apply tamper-evident seals across the enclosure seams
-2. Record seal serial numbers in the MSOC database
+2. Record seal serial numbers in the M-SOC database
 3. Take photographs of the sealed enclosure
 
 ---
@@ -472,7 +472,7 @@ If components need replacement:
 2. Remove tamper seals (document serial numbers)
 3. Perform required maintenance
 4. Re-apply new tamper seals
-5. Update MSOC database with new seal numbers
+5. Update M-SOC database with new seal numbers
 
 ---
 
@@ -480,7 +480,7 @@ If components need replacement:
 
 **Version:** 1.0  
 **Last Updated:** [Current Date]  
-**Approved By:** [MSOC Technical Director]  
+**Approved By:** [M-SOC Technical Director]  
 **Next Review Date:** [One Year from Current Date]
 
 ---

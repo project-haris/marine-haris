@@ -1,4 +1,4 @@
-# Bill of Materials - Marine_Haris
+# Bill of Materials - Project Haris
 
 ## 📦 **Core Components**
 

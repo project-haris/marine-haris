@@ -1,15 +1,15 @@
-# Marine_Haris: Maritime Security Data Collector
+# Project Haris: Maritime Security Data Collector
 
 ![Status](https://img.shields.io/badge/Status-Active-success)
 ![Version](https://img.shields.io/badge/Version-1.0.0-blue)
 ![License](https://img.shields.io/badge/License-MIT-yellow)
 
-> **"Marine_Haris"** - Your vigilant guardian for maritime security data collection. 
+> **"Project Haris"** - Your vigilant guardian for maritime security data collection. 
 > Named from Arabic "Haris" (حارس) meaning "guardian" or "protector".
 
 ## 🎯 **Project Overview**
 
-Marine_Haris is an edge computing device designed for **Maritime Security Operations Centers (MSOC)** to collect, process, and transmit vessel data securely. It acts as a sentinel watching over maritime networks, gathering NMEA 2000/0183 data and transmitting it via encrypted VPN to a central operations center.
+Project Haris is an edge computing device designed for **Maritime Security Operations Centers (M-SOC)** to collect, process, and transmit vessel data securely. It acts as a sentinel watching over maritime networks, gathering NMEA 2000/0183 data and transmitting it via encrypted VPN to a central operations center.
 
 ### **Key Features**
 - ✅ **NMEA 2000 & NMEA 0183 data collection** via PiCAN-M HAT
@@ -40,8 +40,8 @@ Marine_Haris is an edge computing device designed for **Maritime Security Operat
 ### **Installation Steps**
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/ahmdngi/Marine_Haris.git
-   cd Marine_Haris
+   git clone https://github.com/ahmdngi/marine_haris.git
+   cd marine_haris
    ```
 
 2. **Configure hardware**
@@ -71,7 +71,7 @@ flowchart LR
     C --> D[Signal K Processing]
     D --> E[Local Storage NVMe]
     D --> F[Tailscale VPN]
-    F --> G[Remote MSOC Server]
+    F --> G[Remote M-SOC Server]
     
     H[12V Boat Power] --> B
     I[Sim Card] --> J[TP-Link NX200]
@@ -102,7 +102,7 @@ flowchart TD
     C --> D[Configure Network]
     D --> E[Install Dependencies]
     E --> F[Configure VPN]
-    F --> G[Deploy Marine_Haris Software]
+    F --> G[Deploy Project Haris Software]
     G --> H[Start Services]
     H --> I[Test Data Flow]
     I --> J{Tests Pass?}
