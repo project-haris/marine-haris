@@ -548,6 +548,90 @@
             margin-top: 0.75rem;
         }
 
+        /* Watchtower Section */
+        .watchtower {
+            padding: 8rem 2rem;
+            background: var(--bg-primary);
+        }
+
+        .watchtower-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .watchtower-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) minmax(320px, 0.8fr);
+            gap: 1.5rem;
+            margin-top: 3rem;
+            align-items: stretch;
+        }
+
+        .watchtower-panel {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+        }
+
+        .watchtower-panel h3 {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+        }
+
+        .watchtower-panel p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .watchtower-list {
+            display: grid;
+            gap: 0.9rem;
+        }
+
+        .watchtower-item {
+            display: flex;
+            gap: 0.75rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .watchtower-item strong {
+            color: var(--text-primary);
+        }
+
+        .watchtower-marker {
+            color: var(--accent-cyan);
+            flex-shrink: 0;
+        }
+
+        .command-stack {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .command-card {
+            padding: 1rem;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+        }
+
+        .command-label {
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+        }
+
+        .command-line {
+            color: var(--accent-green);
+            font-size: 0.8rem;
+            overflow-wrap: anywhere;
+        }
+
         /* Security Section */
         .security {
             padding: 8rem 2rem;
@@ -721,6 +805,10 @@
             .arch-arrow {
                 transform: rotate(90deg);
             }
+
+            .watchtower-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -735,6 +823,7 @@
             <li><a href="#features">Features</a></li>
             <li><a href="#architecture">Architecture</a></li>
             <li><a href="#hardware">Hardware</a></li>
+            <li><a href="#watchtower">Watchtower</a></li>
             <li><a href="#security">Security</a></li>
             <li><a href="#deployment">Deploy</a></li>
         </ul>
@@ -784,10 +873,10 @@
             <div class="terminal-body">
                 <div class="terminal-line">
                     <span class="prompt">$ </span>
-                    <span class="command">ansible-playbook -i inventory/hosts site.yml</span>
+                    <span class="command">ansible-playbook playbooks/group_vessel_edge/main.yml -D</span>
                 </div>
                 <div class="terminal-line output">
-                    <span class="highlight">TASK [marine_haris : Deploy Signal K Server]</span>
+                    <span class="highlight">TASK [haris : Deploy Signal K Server]</span>
                 </div>
                 <div class="terminal-line output"><span class="success">✓</span> Installing NodeJS dependencies...</div>
                 <div class="terminal-line output"><span class="success">✓</span> Configuring CAN interface can0...</div>
@@ -995,6 +1084,60 @@
         </div>
     </section>
 
+    <!-- Watchtower Section -->
+    <section id="watchtower" class="watchtower">
+        <div class="watchtower-content">
+            <div class="section-header">
+                <div class="section-tag mono">Automation Control</div>
+                <h2 class="section-title">Watchtower Provisioning</h2>
+                <p class="section-desc">
+                    Watchtower is the Ansible automation layer for Project Haris vessel edge nodes and M-SOC core services.
+                </p>
+            </div>
+
+            <div class="watchtower-grid">
+                <div class="watchtower-panel">
+                    <h3>Operational Roles</h3>
+                    <p>
+                        The automation repo installs the vessel collector stack, configures Signal K and Filebeat, and prepares core services that receive Haris telemetry onshore.
+                    </p>
+                    <div class="watchtower-list">
+                        <div class="watchtower-item">
+                            <span class="watchtower-marker mono">01</span>
+                            <span><strong>Vessel edge:</strong> Signal K, harisd, Node-RED, Filebeat, Tailscale, Zabbix agent, CAN interface setup.</span>
+                        </div>
+                        <div class="watchtower-item">
+                            <span class="watchtower-marker mono">02</span>
+                            <span><strong>M-SOC core:</strong> Elasticsearch, Logstash, Kibana, Zabbix server, firewall policy, Docker-ready services.</span>
+                        </div>
+                        <div class="watchtower-item">
+                            <span class="watchtower-marker mono">03</span>
+                            <span><strong>Data path:</strong> JSONL snapshots ship through Filebeat over Tailscale to Logstash and Elasticsearch.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="watchtower-panel">
+                    <h3>Primary Playbooks</h3>
+                    <div class="command-stack mono">
+                        <div class="command-card">
+                            <div class="command-label">Edge Node</div>
+                            <div class="command-line">ansible-playbook playbooks/group_vessel_edge/main.yml -D</div>
+                        </div>
+                        <div class="command-card">
+                            <div class="command-label">M-SOC Core</div>
+                            <div class="command-line">ansible-playbook playbooks/group_msoc_core/main.yml -D</div>
+                        </div>
+                        <div class="command-card">
+                            <div class="command-label">Targeted Haris Role</div>
+                            <div class="command-line">ansible-playbook playbooks/group_vessel_edge/main.yml -l haris-sinilind -t haris -D</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Security Section -->
     <section id="security" class="security">
         <div class="security-content">
@@ -1078,7 +1221,7 @@
             <div class="deploy-step">
                 <span class="step-number">2</span>
                 <h4>Configure Variables</h4>
-                <p>Set vessel ID, credentials, and network settings in Ansible host_vars.</p>
+                <p>Set vessel ID, credentials, and network settings in Watchtower host_vars.</p>
             </div>
 
             <div class="deploy-step">
