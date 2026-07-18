@@ -1,8 +1,7 @@
 # Project Haris: Maritime Security Data Collector
 
-![Status](https://img.shields.io/badge/Status-Active-success)
-![Version](https://img.shields.io/badge/Version-1.0.0-blue)
-![License](https://img.shields.io/badge/License-MIT-yellow)
+[![License](https://img.shields.io/github/license/ahmdngi/marine_haris?style=flat-square)]()
+[![Stars](https://img.shields.io/github/stars/ahmdngi/marine_haris?style=flat-square)](https://github.com/ahmdngi/marine_haris)
 
 > **"Project Haris"** - Your vigilant guardian for maritime security data collection. 
 > Named from Arabic "Haris" (حارس) meaning "guardian" or "protector".
