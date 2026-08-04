@@ -1,28 +1,24 @@
 [Unit]
-Description=Project Haris Data Collection Daemon
-Documentation=https://github.com/ahmdngi/marine_haris
-After=network.target tailscaled.service
-Wants=tailscaled.service
+Description=Project Haris Data Collector
+Wants=network-online.target signalk.service
+After=network-online.target signalk.service
 
 [Service]
 Type=simple
 User=haris
-Group=haris
-WorkingDirectory=/opt/marine_haris
-ExecStart=/usr/bin/python3 /opt/marine_haris/src/data_collection/nmea2000_parser.py
-Restart=always
+WorkingDirectory=/opt/haris
+Environment="HARIS_VESSEL_ID=VESSEL-001"
+Environment="HARIS_VESSEL_NAME=vessel"
+Environment="HARIS_SIGNALK_API_URL=http://127.0.0.1:3000/signalk/v1/api/vessels/self"
+Environment="HARIS_SNAPSHOT_INTERVAL=10"
+Environment="HARIS_LOG_PATH=/opt/haris/logs/signalk_snapshots.jsonl"
+Environment="HARIS_MAX_SIGNAL_AGE=30"
+Environment="HARIS_SOC_FORWARD_ENABLED=false"
+Environment="HARIS_SOC_LOG_HOST=haris-citadel"
+Environment="HARIS_SOC_LOG_PORT=5045"
+ExecStart=/usr/bin/python3 /opt/haris/src/data_aggregator.py
+Restart=on-failure
 RestartSec=10
-StandardOutput=journal
-StandardError=journal
-SyslogIdentifier=harisd
-
-# Security hardening
-NoNewPrivileges=true
-PrivateTmp=true
-ProtectSystem=strict
-ProtectHome=true
-ReadWritePaths=/opt/marine_haris/data
-ReadOnlyPaths=/var/lib/tailscale
 
 [Install]
 WantedBy=multi-user.target
