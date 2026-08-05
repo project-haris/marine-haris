@@ -53,6 +53,42 @@ class TestBlankStaleValues(unittest.TestCase):
         self.assertEqual(out["environment"]["mode"]["value"], "auto")
 
 
+class TestPrunePayload(unittest.TestCase):
+    def test_meta_and_values_stripped(self):
+        payload = {
+            "navigation": {
+                "headingTrue": {
+                    "value": 5.3,
+                    "timestamp": now_iso(),
+                    "$source": "can0.16",
+                    "pgn": 127250,
+                    "meta": {"description": "heading", "units": "rad", "displayUnits": {"formula": "x*57.3"}},
+                    "values": {"can0.16": {"value": 5.3}, "can0.10": {"value": 5.31}},
+                }
+            }
+        }
+        out = agg.prune_payload(payload)
+        node = out["navigation"]["headingTrue"]
+        self.assertEqual(node["value"], 5.3)
+        self.assertEqual(node["$source"], "can0.16")
+        self.assertEqual(node["pgn"], 127250)
+        self.assertNotIn("meta", node)
+        self.assertNotIn("values", node)
+
+    def test_value_objects_kept_verbatim(self):
+        payload = {"navigation": {"position": {"value": {"latitude": 58.4, "longitude": 24.5}, "timestamp": now_iso()}}}
+        out = agg.prune_payload(payload)
+        self.assertEqual(out["navigation"]["position"]["value"]["latitude"], 58.4)
+        self.assertEqual(out["navigation"]["position"]["value"]["longitude"], 24.5)
+
+    def test_lists_walked(self):
+        payload = {"gnss": {"satellitesInView": {"value": {"count": 2, "satellites": [{"id": 1, "snr": 40}, {"id": 2, "snr": 42}]}, "meta": {"desc": "x"}}}}
+        out = agg.prune_payload(payload)
+        self.assertEqual(out["gnss"]["satellitesInView"]["value"]["count"], 2)
+        self.assertEqual(len(out["gnss"]["satellitesInView"]["value"]["satellites"]), 2)
+        self.assertNotIn("meta", out["gnss"]["satellitesInView"])
+
+
 class TestBuildEvent(unittest.TestCase):
     def test_event_shape(self):
         payload = {"navigation": {"headingTrue": node(4.28, now_iso())}}

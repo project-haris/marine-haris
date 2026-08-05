@@ -2,6 +2,14 @@
 
 All notable changes to marine_haris.
 
+## [0.3.0] — 2026-08-05
+
+### Added — snapshot payload pruning
+
+- `prune_payload()` in `data_aggregator.py`: strips every `meta` block (static schema — description/units/formula) and every per-source `values` map from Signal K snapshots, keeping `value`/`timestamp`/`$source`/`pgn` per path.
+- Sinilind N2K docs drop from ~30–160 KB to ~12 KB (~10×); ends the ES 1000-field-limit explosion (see watchtower `guides/references/es-field-limit-fix.md`). Per-frame detail remains archived in the raw CAN capture (`haris-canraw`), so nothing is lost.
+- New tests: `TestPrunePayload` (meta/values stripped, value objects kept verbatim, lists walked).
+
 ## [0.2.0] — 2026-08-04
 
 ### Changed — Aggregator synced with production
