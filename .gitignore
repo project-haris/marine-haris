@@ -80,3 +80,9 @@ roles/krb5
 roles/vault_auth
 roles/vault_ssh_auth
 roles/proxmox
+
+AGENTS.md
+
+# archify skill tooling (installed via npx skills add)
+.agents/
+skills-lock.json
