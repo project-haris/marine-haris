@@ -1,4 +1,8 @@
 [Unit]
+# REFERENCE COPY — the deployed unit on vessel edge nodes is rendered by
+# watchtower: roles/haris/templates/harisd.service.j2 (Ansible templated).
+# Edit the watchtower template for fleet changes; this file documents the
+# intended structure and defaults for readers of this repo.
 Description=Project Haris Data Collector
 Wants=network-online.target signalk.service
 After=network-online.target signalk.service

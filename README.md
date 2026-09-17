@@ -1,7 +1,7 @@
 # Project Haris: Maritime Security Data Collector
 
-[![License](https://img.shields.io/github/license/ahmdngi/marine_haris?style=flat-square)]()
-[![Stars](https://img.shields.io/github/stars/ahmdngi/marine_haris?style=flat-square)](https://github.com/ahmdngi/marine_haris)
+[![License](https://img.shields.io/github/license/project-haris/marine_haris?style=flat-square)]()
+[![Stars](https://img.shields.io/github/stars/project-haris/marine_haris?style=flat-square)](https://github.com/project-haris/marine_haris)
 
 > **"Project Haris"** - Your vigilant guardian for maritime security data collection. 
 > Named from Arabic "Haris" (حارس) meaning "guardian" or "protector".
@@ -37,28 +37,35 @@ Project Haris is an edge computing device designed for **Maritime Security Opera
 - Remote server with public IP
 
 ### **Installation Steps**
+
+The production deployment path is **[watchtower](https://github.com/project-haris/watchtower)** (Project Haris Ansible automation): hardware assembly → OS flash → then `ansible-playbook playbooks/group_vessel_edge/main.yml` provisions Signal K, the `harisd` collector, Filebeat, and Tailscale. This repo is the collector source; `src/system/harisd.service` is a reference copy of the systemd unit (the deployed unit is rendered by watchtower's `harisd.service.j2` template).
+
+For a manual/bench install of the collector alone:
+
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/ahmdngi/marine_haris.git
+   git clone https://github.com/project-haris/marine_haris.git
    cd marine_haris
    ```
 
-2. **Configure hardware**
+2. **Enable the CAN interface** (NMEA 2000 via PiCAN-M HAT)
    ```bash
-   # Enable CAN interface
-   sudo ./config/system/enable_can.sh
+   # bring up can0 at 250 kbit/s (or use watchtower's haris role, which manages this)
+   sudo ip link set can0 up type can bitrate 250000
    ```
 
-3. **Set up VPN connection**
+3. **Set up the Tailscale VPN**
    ```bash
    # Configure Tailscale
    sudo ./config/tailscale/setup.sh
    ```
 
-4. **Start data collection**
+4. **Install and start the collector service**
    ```bash
-   # Install and start services
-   sudo ./src/system/install_services.sh
+   # install the harisd systemd unit manually, or let watchtower deploy it
+   sudo cp src/system/harisd.service /etc/systemd/system/
+   sudo systemctl daemon-reload
+   sudo systemctl enable --now harisd
    ```
 
 ## 📊 **System Architecture**
@@ -113,9 +120,9 @@ flowchart TD
 ```
 
 
-## 🤝 **Contributing**
+## 📦 **Deployment**
 
-We welcome contributions from the maritime security community. Please read our [Contributing Guidelines](CONTRIBUTING.md) before submitting PRs.
+Fleet deployment is automated by **watchtower** — see its README for the playbook commands. The flow: assemble hardware → flash OpenPlotter/RPi OS → run the vessel-edge playbook over Tailscale.
 
 ## 📄 **License**
 
