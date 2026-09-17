@@ -70,6 +70,8 @@ For a manual/bench install of the collector alone:
 
 ## 📊 **System Architecture**
 
+> **Interactive architecture diagram:** [`docs/architecture-marine-haris.html`](docs/architecture-marine-haris.html) — archify-generated (dark/light themes, PNG/SVG export). Source spec: [`docs/architecture-marine-haris.json`](docs/architecture-marine-haris.json).
+
 ```mermaid
 flowchart LR
     A[Vessel NMEA Network] --> B[PiCAN-M HAT]

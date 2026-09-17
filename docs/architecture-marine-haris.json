@@ -1,0 +1,301 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Project Haris \u2014 marine_haris Edge Collector",
+    "subtitle": "Signal K polling, freshness filtering, and SOC forwarding on the vessel edge node",
+    "output": "docs/architecture-marine-haris.html",
+    "quality_profile": "showcase",
+    "views": [
+      {
+        "id": "snapshot-path",
+        "label": "Snapshot pipeline",
+        "focus": [
+          "nmea",
+          "signalk",
+          "harisd",
+          "snapshot",
+          "filebeat",
+          "soc"
+        ],
+        "note": "NMEA frames become Signal K state; harisd polls it into pruned JSONL snapshots for Filebeat and SOC forwarding."
+      },
+      {
+        "id": "raw-path",
+        "label": "Raw preservation",
+        "focus": [
+          "nmea",
+          "canraw",
+          "hubraw"
+        ],
+        "note": "Raw CAN and NMEA frames are captured independently of snapshots \u2014 per-frame detail survives aggregation."
+      }
+    ],
+    "viewBox": [
+      1080,
+      580
+    ]
+  },
+  "components": [
+    {
+      "id": "nmea",
+      "type": "external",
+      "label": "NMEA 2000 / 0183",
+      "sublabel": "Vessel bus (PiCAN-M HAT)",
+      "pos": [
+        40,
+        300
+      ],
+      "size": [
+        140,
+        64
+      ],
+      "tag": "CAN can0 \u00b7 UART"
+    },
+    {
+      "id": "signalk",
+      "type": "backend",
+      "label": "Signal K Server",
+      "sublabel": ":3000 \u2014 /signalk/v1/api",
+      "pos": [
+        250,
+        300
+      ],
+      "size": [
+        140,
+        64
+      ],
+      "tag": "OpenPlotter or standalone"
+    },
+    {
+      "id": "harisd",
+      "type": "backend",
+      "label": "harisd Collector",
+      "sublabel": "data_aggregator.py",
+      "pos": [
+        460,
+        300
+      ],
+      "size": [
+        150,
+        64
+      ],
+      "tag": "poll 10s \u00b7 systemd"
+    },
+    {
+      "id": "freshness",
+      "type": "security",
+      "label": "Freshness Filter",
+      "sublabel": "stale-blank + prune",
+      "pos": [
+        670,
+        150
+      ],
+      "size": [
+        160,
+        64
+      ],
+      "tag": "MAX_SIGNAL_AGE=30s"
+    },
+    {
+      "id": "snapshot",
+      "type": "database",
+      "label": "JSONL Snapshots",
+      "sublabel": "signalk_snapshots.jsonl",
+      "pos": [
+        670,
+        300
+      ],
+      "size": [
+        150,
+        64
+      ]
+    },
+    {
+      "id": "filebeat",
+      "type": "backend",
+      "label": "Filebeat",
+      "sublabel": "ships JSONL lines",
+      "pos": [
+        880,
+        300
+      ],
+      "size": [
+        130,
+        64
+      ]
+    },
+    {
+      "id": "soc",
+      "type": "external",
+      "label": "M-SOC (Citadel)",
+      "sublabel": "Logstash :5044/:5045 \u2192 ES",
+      "pos": [
+        880,
+        150
+      ],
+      "size": [
+        150,
+        64
+      ],
+      "tag": "via Tailscale"
+    },
+    {
+      "id": "canraw",
+      "type": "database",
+      "label": "haris-canraw",
+      "sublabel": "raw CAN capture (candump)",
+      "pos": [
+        250,
+        460
+      ],
+      "size": [
+        140,
+        64
+      ],
+      "tag": "never deleted"
+    },
+    {
+      "id": "hubraw",
+      "type": "database",
+      "label": "Hub Raw Log",
+      "sublabel": "nmea_raw.log",
+      "pos": [
+        460,
+        460
+      ],
+      "size": [
+        140,
+        64
+      ],
+      "tag": "50 MB rotate \u00b7 keep all"
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "region",
+      "label": "Vessel edge node (haris-sinilind / haris-arthur)",
+      "wraps": [
+        "signalk",
+        "harisd",
+        "freshness",
+        "snapshot",
+        "filebeat",
+        "canraw",
+        "hubraw"
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "id": "nmea-to-signalk",
+      "from": "nmea",
+      "to": "signalk",
+      "label": "frames",
+      "variant": "emphasis"
+    },
+    {
+      "id": "signalk-to-harisd",
+      "from": "signalk",
+      "to": "harisd",
+      "label": "poll",
+      "fromSide": "right",
+      "toSide": "left",
+      "labelAt": [
+        425,
+        378
+      ]
+    },
+    {
+      "id": "harisd-to-freshness",
+      "from": "harisd",
+      "to": "freshness",
+      "label": "prune + blank stale",
+      "fromSide": "right",
+      "toSide": "left"
+    },
+    {
+      "id": "harisd-to-snapshot",
+      "from": "harisd",
+      "to": "snapshot",
+      "label": "append JSONL",
+      "fromSide": "bottom",
+      "toSide": "left"
+    },
+    {
+      "id": "snapshot-to-filebeat",
+      "from": "snapshot",
+      "to": "filebeat",
+      "label": "tail",
+      "fromSide": "right",
+      "toSide": "left"
+    },
+    {
+      "id": "filebeat-to-soc",
+      "from": "filebeat",
+      "to": "soc",
+      "label": "Beats :5044",
+      "fromSide": "top",
+      "toSide": "left",
+      "variant": "emphasis"
+    },
+    {
+      "id": "freshness-to-soc",
+      "from": "freshness",
+      "to": "soc",
+      "label": "TCP :5045",
+      "fromSide": "right",
+      "toSide": "top",
+      "variant": "security"
+    },
+    {
+      "id": "nmea-to-canraw",
+      "from": "nmea",
+      "to": "canraw",
+      "label": "candump",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "canraw-to-hubraw",
+      "from": "canraw",
+      "to": "hubraw",
+      "label": "rotated logs",
+      "fromSide": "right",
+      "toSide": "left",
+      "variant": "dashed"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Snapshot pipeline",
+      "items": [
+        "harisd polls Signal K every 10s (HARIS_SNAPSHOT_INTERVAL)",
+        "prune_payload strips meta + per-source values (~10x smaller docs)",
+        "Stale values blanked after 30s \u2014 absent, never wrong, in Elasticsearch",
+        "Filebeat ships snapshots as Beats events to Logstash :5044"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "Raw preservation",
+      "items": [
+        "haris-canraw.service captures raw CAN frames (never-delete logrotate)",
+        "Simulator hub writes raw NMEA to nmea_raw.log (50 MB rotate, keep all)",
+        "Per-frame detail survives aggregation pruning",
+        "Deployed by watchtower (roles/haris) \u2014 this repo is the source"
+      ]
+    },
+    {
+      "dot": "violet",
+      "title": "Deployment",
+      "items": [
+        "systemd unit harisd.service \u2014 reference copy here, deployed via watchtower template",
+        "All tuning via HARIS_* environment variables",
+        "Hardware: RPi 5 + PiCAN-M HAT + NVMe + TP-Link NX200",
+        "Tailscale encrypted tunnel to M-SOC"
+      ]
+    }
+  ]
+}
