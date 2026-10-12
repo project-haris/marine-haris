@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to marine_haris.
+All notable changes to marine-haris.
 
 ## [0.3.0] — 2026-08-05
 

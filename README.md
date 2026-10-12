@@ -1,7 +1,7 @@
 # Project Haris: Maritime Security Data Collector
 
-[![License](https://img.shields.io/github/license/project-haris/marine_haris?style=flat-square)]()
-[![Stars](https://img.shields.io/github/stars/project-haris/marine_haris?style=flat-square)](https://github.com/project-haris/marine_haris)
+[![License](https://img.shields.io/github/license/project-haris/marine-haris?style=flat-square)]()
+[![Stars](https://img.shields.io/github/stars/project-haris/marine-haris?style=flat-square)](https://github.com/project-haris/marine-haris)
 
 > **"Project Haris"** - Your vigilant guardian for maritime security data collection. 
 > Named from Arabic "Haris" (حارس) meaning "guardian" or "protector".
@@ -44,8 +44,8 @@ For a manual/bench install of the collector alone:
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/project-haris/marine_haris.git
-   cd marine_haris
+   git clone https://github.com/project-haris/marine-haris.git
+   cd marine-haris
    ```
 
 2. **Enable the CAN interface** (NMEA 2000 via PiCAN-M HAT)

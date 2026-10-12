@@ -2,7 +2,7 @@
   "schema_version": 1,
   "diagram_type": "architecture",
   "meta": {
-    "title": "Project Haris \u2014 marine_haris Edge Collector",
+    "title": "Project Haris \u2014 marine-haris Edge Collector",
     "subtitle": "Signal K polling, freshness filtering, and SOC forwarding on the vessel edge node",
     "output": "docs/architecture-marine-haris.html",
     "quality_profile": "showcase",
